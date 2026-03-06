@@ -1,0 +1,11 @@
+### 회원가입 페이지
+GET http://localhost:8080/signup
+
+###회원가입 요청
+POST http://localhost:8080/signup
+Content-Type: application/x-www-form-urlencoded
+
+username=&password=admin&name=
+
+### 로그인 페이지
+GET http://localhost:8080/login
