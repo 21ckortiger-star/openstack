@@ -1,0 +1,130 @@
+-- goonggeum homepage ERD schema
+-- target: MySQL 8.x
+
+CREATE DATABASE IF NOT EXISTS goonggeum_homepage
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+USE goonggeum_homepage;
+
+-- 1) users
+CREATE TABLE IF NOT EXISTS users (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) NOT NULL UNIQUE,
+  email VARCHAR(120) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  display_name VARCHAR(80) NOT NULL,
+  role ENUM('USER', 'ADMIN') NOT NULL DEFAULT 'USER',
+  bio VARCHAR(500),
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- 2) categories
+CREATE TABLE IF NOT EXISTS categories (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(60) NOT NULL UNIQUE,
+  slug VARCHAR(80) NOT NULL UNIQUE,
+  description VARCHAR(255),
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 3) posts
+CREATE TABLE IF NOT EXISTS posts (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  author_id BIGINT NOT NULL,
+  category_id BIGINT,
+  title VARCHAR(200) NOT NULL,
+  slug VARCHAR(240) NOT NULL UNIQUE,
+  summary VARCHAR(400),
+  content LONGTEXT NOT NULL,
+  status ENUM('DRAFT', 'PUBLISHED') NOT NULL DEFAULT 'DRAFT',
+  published_at DATETIME,
+  view_count INT NOT NULL DEFAULT 0,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_posts_author FOREIGN KEY (author_id) REFERENCES users(id),
+  CONSTRAINT fk_posts_category FOREIGN KEY (category_id) REFERENCES categories(id)
+);
+
+-- 4) tags
+CREATE TABLE IF NOT EXISTS tags (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(40) NOT NULL UNIQUE,
+  slug VARCHAR(60) NOT NULL UNIQUE
+);
+
+-- 5) post_tags (N:M)
+CREATE TABLE IF NOT EXISTS post_tags (
+  post_id BIGINT NOT NULL,
+  tag_id BIGINT NOT NULL,
+  PRIMARY KEY (post_id, tag_id),
+  CONSTRAINT fk_post_tags_post FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
+  CONSTRAINT fk_post_tags_tag FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
+);
+
+-- 6) comments
+CREATE TABLE IF NOT EXISTS comments (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  post_id BIGINT NOT NULL,
+  user_id BIGINT NOT NULL,
+  parent_id BIGINT,
+  content VARCHAR(1000) NOT NULL,
+  is_deleted TINYINT(1) NOT NULL DEFAULT 0,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_comments_post FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
+  CONSTRAINT fk_comments_user FOREIGN KEY (user_id) REFERENCES users(id),
+  CONSTRAINT fk_comments_parent FOREIGN KEY (parent_id) REFERENCES comments(id) ON DELETE SET NULL
+);
+
+-- 7) post_likes
+CREATE TABLE IF NOT EXISTS post_likes (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  post_id BIGINT NOT NULL,
+  user_id BIGINT NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT uk_post_user_like UNIQUE (post_id, user_id),
+  CONSTRAINT fk_post_likes_post FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
+  CONSTRAINT fk_post_likes_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- 8) projects
+CREATE TABLE IF NOT EXISTS projects (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  owner_id BIGINT NOT NULL,
+  title VARCHAR(120) NOT NULL,
+  slug VARCHAR(140) NOT NULL UNIQUE,
+  short_desc VARCHAR(255),
+  detail_desc TEXT,
+  thumbnail_url VARCHAR(255),
+  tech_stack VARCHAR(255),
+  github_url VARCHAR(255),
+  live_url VARCHAR(255),
+  is_public TINYINT(1) NOT NULL DEFAULT 1,
+  sort_order INT NOT NULL DEFAULT 0,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_projects_owner FOREIGN KEY (owner_id) REFERENCES users(id)
+);
+
+-- 9) project_images
+CREATE TABLE IF NOT EXISTS project_images (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  project_id BIGINT NOT NULL,
+  image_url VARCHAR(255) NOT NULL,
+  caption VARCHAR(120),
+  sort_order INT NOT NULL DEFAULT 0,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_project_images_project FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE
+);
+
+-- 10) contact_messages
+CREATE TABLE IF NOT EXISTS contact_messages (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(80) NOT NULL,
+  email VARCHAR(120) NOT NULL,
+  subject VARCHAR(180),
+  message TEXT NOT NULL,
+  status ENUM('NEW', 'READ', 'DONE') NOT NULL DEFAULT 'NEW',
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
