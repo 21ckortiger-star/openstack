@@ -80,6 +80,23 @@ a {
   display: flex;
   gap: 1rem;
   color: var(--muted);
+  align-items: center;
+}
+
+.auth-btn {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.28rem 0.7rem;
+  font-size: 0.84rem;
+  color: #d6e7ff;
+}
+
+.auth-btn.login {
+  background: rgba(124, 185, 255, 0.18);
+}
+
+.auth-btn.signup {
+  background: rgba(124, 185, 255, 0.08);
 }
 
 .hero {
