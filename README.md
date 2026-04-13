@@ -64,7 +64,62 @@ graph TB
     style DB fill:#a155ff,stroke:#000,color:#000,font-weight:bold
     style AWS_AI_Services fill:#232f3e,stroke:#ff9900,color:#fff
 ```
+<br><br><br>
 
+<p align="center" style="font-size: 20px; font-weight: bold;">
+  상세한 인프라 자원 및 자동화 흐름은 아래 상세 아키텍처를 참고해 주세요.
+</p>
+
+<br><br>
+
+```mermaid
+graph TD
+    %% 레이어 정의 및 스타일
+    subgraph Public_Cloud_Layer [Level 1. Public Cloud & User Interface]
+        direction LR
+        User((Admin/User))
+        subgraph AWS_AI_Engine [AWS AI Services]
+            Lex[<b>Amazon Lex</b><br/>NLP Chatbot]
+            Rek[<b>Amazon Rekognition</b><br/>Vision Analysis]
+        end
+    end
+
+    %% 네트워크 브릿지
+    Network_Bridge{{"Floating IP Gateway<br/>(Neutron Hybrid Bridge)"}}
+
+    %% 오픈스택 프라이빗 레이어
+    subgraph OpenStack_Infra_Layer [Level 2. OpenStack Private Infrastructure]
+        direction TB
+        subgraph Automation_Zone [Ansible Automation Hub]
+            Ansible((Ansible<br/>Engine))
+            OpenClaw((OpenClaw<br/>Agent))
+        end
+
+        subgraph Instance_Zone [Compute & Data Resources]
+            direction LR
+            Web[<b>Web Dashboard</b><br/>m1.space.web<br/>Spring Boot]
+            DB[(<b>SQL Database</b><br/>m1.space.db<br/>MySQL 8.0)]
+        end
+    end
+
+    %% 연결 관계 (데이터 흐름)
+    User <-->|HTTPS/SSH| Network_Bridge
+    Network_Bridge <-->|NAT Routing| Web
+    Web <-->|API Request| AWS_AI_Engine
+    Ansible -.->|IaC Provisioning| Web
+    Ansible -.->|IaC Provisioning| DB
+    Web <-->|JPA/JDBC| DB
+
+    %% 스타일링 (전문적인 다크 테마)
+    style Public_Cloud_Layer fill:#0d1117,stroke:#ff9900,stroke-width:2px,color:#fff
+    style OpenStack_Infra_Layer fill:#0d1117,stroke:#a155ff,stroke-width:2px,color:#fff
+    style AWS_AI_Engine fill:#232f3e,stroke:#ff9900,color:#fff
+    style Web fill:#00d4ff,stroke:#000,color:#000,font-weight:bold
+    style DB fill:#a155ff,stroke:#000,color:#000,font-weight:bold
+    style Network_Bridge fill:#333,stroke:#fff,color:#00d4ff
+    style Ansible fill:#e00,stroke:#fff,color:#fff
+    style OpenClaw fill:#00ff88,stroke:#000,color:#000
+```
 
 ---
 
