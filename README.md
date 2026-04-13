@@ -34,7 +34,8 @@ graph TD
     end
 
     User <--> Router
-    Web_Server <--> AI_Cloud 
+    Web_Server <--> AI_Cloud
+```
 
 ---
 
