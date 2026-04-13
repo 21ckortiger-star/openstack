@@ -1,4 +1,4 @@
-package com.example.lms.controller;
+package com.example.openstack.controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;

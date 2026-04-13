@@ -1,7 +1,7 @@
-package com.example.lms.controller;
+package com.example.openstack.controller;
 
-import com.example.lms.domain.Member;
-import com.example.lms.service.AuthService;
+import com.example.openstack.domain.Member;
+import com.example.openstack.service.AuthService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

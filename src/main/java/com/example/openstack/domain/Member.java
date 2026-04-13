@@ -1,4 +1,4 @@
-package com.example.lms.domain;
+package com.example.openstack.domain;
 
 public class Member {
     private String username;

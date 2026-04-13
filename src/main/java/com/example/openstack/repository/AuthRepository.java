@@ -1,6 +1,6 @@
-package com.example.lms.repository;
+package com.example.openstack.repository;
 
-import com.example.lms.domain.Member;
+import com.example.openstack.domain.Member;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;

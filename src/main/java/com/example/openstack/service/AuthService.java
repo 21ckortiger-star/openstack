@@ -1,7 +1,7 @@
-package com.example.lms.service;
+package com.example.openstack.service;
 
-import com.example.lms.domain.Member;
-import com.example.lms.repository.AuthRepository;
+import com.example.openstack.domain.Member;
+import com.example.openstack.repository.AuthRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.example.lms;
+package com.example.openstack;
 
 import org.junit.jupiter.api.Test;
 
