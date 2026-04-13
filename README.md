@@ -35,3 +35,65 @@ graph TD
 
     User <--> Router
     Web_Server <--> AI_Cloud
+
+---
+
+## 🛠️ 3. Tech Stack (기술 스택)
+
+### **Infrastructure & DevOps**
+* **Cloud Platform:** OpenStack (Yoga/Zena version)
+    * **Compute:** Nova (Instance Management)
+    * **Network:** Neutron (L3 Router, Floating IP, Security Groups)
+    * **Storage:** Cinder (Block Storage for DB)
+* **Automation & Agents:** * **Ansible:** Infrastructure Provisioning & Configuration
+    * **OpenClaw:** AI-driven Infrastructure Monitoring & Agentic Workflow
+* **Dev Environment:** WSL2, Ubuntu 22.04 LTS, STS4 (Spring Tool Suite)
+
+### **Backend & AIaaS**
+* **Framework:** Java Spring Boot 3.x / Jakarta EE
+* **Database:** MySQL 8.0 (Indexing & Query Optimization applied)
+* **AI API (AIaaS):** * **Amazon Lex:** Natural Language Understanding for Command Processing
+    * **Amazon Rekognition:** Image Analysis & User Context Recognition
+
+---
+
+## 📝 4. Key Implementation (핵심 구현 내용)
+
+### **1) OpenStack 외부망 연동 (Neutron Gateway)**
+* 프로젝트의 핵심 전제인 **외부망 연결 가능 상태**를 구현하기 위해 Neutron Router에 External Gateway를 설정하였습니다.
+* **Floating IP**를 Web Server 인스턴스에 매핑하여 외부 유저의 접속 및 외부 AI API(AWS)와의 양방향 통신을 보장합니다.
+
+### **2) 가볍고 강력한 대시보드 UI (Frontend)**
+* 오빠(goonggeum)만의 감각적인 디자인을 유지하며, `Projects` 섹션을 확장하여 실시간 서버 자원(CPU, Mem) 상태를 시각화하였습니다.
+* **Responsive Design:** 다양한 디바이스에서 인프라 상태를 확인할 수 있도록 최적화되었습니다.
+
+### **3) AI-Driven Infrastructure (OpenClaw & AIaaS)**
+* **OpenClaw**를 활용하여 인프라 장애 발생 시 AI가 원인을 분석하고 가이드를 제공하는 기능을 실험적으로 구현하였습니다.
+* **AWS Lex**를 통해 텍스트 명령어로 인스턴스 정보를 조회하는 기능을 연동하였습니다.
+
+---
+
+## 🚀 5. How to Run (실행 방법)
+
+### **Step 1: OpenStack Environment Setup**
+1. **Neutron 네트워크 설정:** 외부 통신을 위해 External Gateway가 설정된 Router를 생성하고, 인스턴스에 Floating IP를 할당합니다.
+2. **보안 그룹 설정:** 웹 접속을 위한 `8080`, 외부 AI API 연동을 위한 `443`, 관리를 위한 `22` 포트를 개방합니다.
+
+### **Step 2: Infrastructure Provisioning (Ansible)**
+1. `ansible-playbook setup.yml` 명령어를 통해 타겟 인스턴스에 Java, MySQL 및 필요한 환경 설정을 자동으로 수행합니다.
+
+### **Step 3: Application Build & Run**
+1. Spring Boot 애플리케이션 빌드 및 실행:
+   ```bash
+   ./gradlew clean bootRun
+
+---
+
+## 👨‍💻 Author
+* **Name:** goonggeum (Oppa!)
+* **Role:** Full-Stack & Cloud Infrastructure Developer
+* **Contact:** [goonggeum@ajeossi.com](mailto:goonggeum@ajeossi.com)
+* **GitHub:** [21ckortiger-star/space](https://github.com/21ckortiger-star/space)
+
+---
+© 2026 **kortiger**. All rights reserved. 모든 프로젝트 결과물은 교육용 포트폴리오 목적으로 제작되었습니다.
