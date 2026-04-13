@@ -18,23 +18,46 @@
 이 프로젝트는 **Neutron 외부망 연동**을 통해 로컬 자원과 퍼블릭 클라우드를 유기적으로 연결하는 '하이브리드 구조'를 가집니다.
 
 ```mermaid
-graph TD
-    subgraph "External World"
-        User((User/Admin))
-        AI_Cloud[AWS AI Services: Lex, Rekognition]
-    end
+graph TB
+    %% 외부 환경 (Public Cloud & User)
+    subgraph External_World [External / Public Cloud]
+        User((User / Admin))
+        subgraph AWS_AI_Services [AWS AIaaS]
+            Lex[Amazon Lex<br/>Chatbot]
+            Rek[Amazon Rekognition<br/>Vision API]
+        end
+    end    
 
-    subgraph "OpenStack Private Cloud"
-        Router[Neutron Router / Floating IP]
-        Web_Server[Web Dashboard Server: Spring Boot]
-        DB_Server[Database Server: MySQL]
+    %% 하이브리드 연결 허브
+    Bridge{{"Hybrid Gateway<br/>(Floating IP / NAT)"}}
+
+    %% 오픈스택 프라이빗 클라우드
+    subgraph Private_Cloud [OpenStack Private Cloud]
+        direction TB
+        Router[Neutron Router]
         
-        Router <--> Web_Server
-        Web_Server <--> DB_Server
+        subgraph Instance_Layer [Internal Infrastructure]
+            direction LR
+            Web[Web Server<br/>Spring Boot 3.x]
+            DB[(MySQL DB<br/>8.0)]
+        end
     end
 
-    User <--> Router
-    Web_Server <--> AI_Cloud
+    %% 연결 흐름 설정
+    User <--> Bridge
+    Lex <--> Web
+    Rek <--> Web
+    Bridge <--> Router
+    Router <--> Web
+    Web <--> DB
+
+    %% 스타일링 (세련된 컬러링)
+    style External_World fill:#1a1a1a,stroke:#00d4ff,stroke-width:2px,color:#fff
+    style Private_Cloud fill:#1a1a1a,stroke:#a155ff,stroke-width:2px,color:#fff
+    style Bridge fill:#333,stroke:#fff,stroke-dasharray: 5 5,color:#00d4ff
+    style Web fill:#00d4ff,stroke:#000,color:#000,font-weight:bold
+    style DB fill:#a155ff,stroke:#000,color:#000,font-weight:bold
+    style AWS_AI_Services fill:#232f3e,stroke:#ff9900,color:#fff
 ```
 
 ---
