@@ -1,0 +1,15 @@
+# AWS Settings
+aws_region        = "ap-northeast-2"
+aws_instance_type = "t3.micro"
+aws_key_name      = "your-aws-key-name"
+
+# OpenStack Settings
+os_auth_url     = "https://your-openstack-keystone:5000/v3"
+os_username     = "your-username"
+os_password     = "your-password"
+os_tenant_name  = "your-project-name"
+os_region       = "RegionOne"
+os_image_name   = "Ubuntu 22.04"
+os_flavor_name  = "m1.small"
+os_key_name     = "your-os-key-name"
+os_network_name = "your-network-name"

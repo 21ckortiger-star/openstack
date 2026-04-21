@@ -1,15 +1,4 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 6.0"
-    }
-  }
-}
-
-provider "aws" {
-  region = "ap-northeast-2"
-}
+# --- AWS Resources ---
 
 data "aws_ami" "amazon_linux" {
   most_recent = true
@@ -21,7 +10,6 @@ data "aws_ami" "amazon_linux" {
   }
 }
 
-# 1. 보안 그룹 생성 (방화벽 역할)
 resource "aws_security_group" "allow_ssh" {
   name        = "allow_ssh"
   description = "Allow SSH inbound traffic"
@@ -30,7 +18,7 @@ resource "aws_security_group" "allow_ssh" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # 어디서든 접근 가능 (실무에선 본인 IP만 적는 게 안전해요!)
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
@@ -41,26 +29,41 @@ resource "aws_security_group" "allow_ssh" {
   }
 }
 
-# 2. 인스턴스에 보안 그룹과 키 페어 연결
 resource "aws_instance" "app_server" {
   ami           = data.aws_ami.amazon_linux.id
-  instance_type = "t3.micro"
+  instance_type = var.aws_instance_type
   
-  # 보안 그룹 적용
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
-  
-  # 퍼블릭 IP 할당 강제
   associate_public_ip_address = true
-  
-  # ★중요: AWS 콘솔에서 미리 만들어둔 키 페어 이름(확장자 제외)을 여기에 적어주세요!
-  key_name               = "my-key" 
+  key_name               = var.aws_key_name
 
   tags = {
     Name = "My-AI-Dashboard-Server"
   }
 }
 
-output "public_ip" {
-  value       = aws_instance.app_server.public_ip
-  description = "The public IP of the EC2 instance"
+# --- OpenStack Resources ---
+
+# Data source for OpenStack Image
+data "openstack_images_image_v2" "ubuntu" {
+  name        = var.os_image_name
+  most_recent = true
+}
+
+# Data source for OpenStack Network
+data "openstack_networking_network_v2" "network" {
+  name = var.os_network_name
+}
+
+# OpenStack Instance
+resource "openstack_compute_instance_v2" "os_server" {
+  name            = "My-AI-Dashboard-OS-Server"
+  image_id        = data.openstack_images_image_v2.ubuntu.id
+  flavor_name     = var.os_flavor_name
+  key_pair        = var.os_key_name
+  security_groups = ["default"]
+
+  network {
+    uuid = data.openstack_networking_network_v2.network.id
+  }
 }
