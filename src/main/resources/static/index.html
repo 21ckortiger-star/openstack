@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>goonggeum | Home</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <div class="logo">goonggeum</div>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+        <a class="auth-btn login" href="/login">👤 로그인</a>
+        <a class="auth-btn signup" href="/signup">회원가입</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <span class="badge">Personal Homepage</span>
+      <h1>Space-Cloud AI Dashboard</h1>
+      <p class="sub"> OpenStack Hybrid Infrastructure Management System</p>
+      <div class="cta-wrap">
+        <a class="btn primary" href="#projects">Get Started</a>
+        <a class="btn" href="#contact"></a>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="container">
+        <div class="about-wrapper"
+          style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center;">
+
+          <div class="about-text">
+            <h2 style="margin-bottom: 10px;">About This Project</h2>
+            <p class="sub" style="font-size: 1.1rem; line-height: 1.8;">
+              <strong>Hybrid Cloud AIaaS Dashboard</strong>는 프라이빗 클라우드(OpenStack)와
+              퍼블릭 클라우드(AWS)를 결합한 차세대 인프라 관리 솔루션입니다.<br /><br />
+              본 프로젝트는 <strong>IaC(Terraform)</strong>를 통한 인프라 자동 배포와
+              <strong>Ansible</strong> 기반의 구성 관리를 실현하며,
+              로컬의 자원 제약력을 극복하기 위해 AWS의 고지능형 AI 서비스(Lex, Rekognition)를
+              연동한 하이브리드 클라우드 모델을 제시합니다.
+            </p>
+          </div>
+
+          <div class="about-image" style="text-align: center;">
+            <img src="/images/architecture_diagram.png" alt="Hybrid Cloud AIaaS 시스템 아키텍처 다이어그램"
+              style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border: 2px solid #333;">
+            <p style="font-size: 0.9rem; color: #888; margin-top: 10px;">[Hybrid Cloud AIaaS 시스템 아키텍처]</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section alt">
+      <div class="container">
+        <h2>Projects</h2>
+        <div class="grid">
+          <article class="card">
+            <img src="/images/space/space_1-1.jpg" alt="오픈스택 인프라 모니터링" />
+            <h3>Infra Monitor</h3>
+            <p>Real-time OpenStack Instance & Resource Status</p>
+            <a href="/projects/project1.html">Go</a>
+          </article>
+          <article class="card">
+            <img src="/images/space/space_2-1.jpg" alt="AWS AI 테스트베드" />
+            <h3>AI Playground</h3>
+            <p>AWS Lex & Rekognition Intelligent Testbed</p>
+            <a href="/projects/project2.html">Go</a>
+          </article>
+          <article class="card">
+            <img src="/images/space/space_3-1.jpg" alt="인프라 자동화 관리" />
+            <h3>Terraform & Ansible Infrastructure as Code</h3>
+            <p>OpenStack Hybrid Infrastructure Management</p>
+            <a href="/projects/project3.html">Go</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="container">
+        <h2>Contact</h2>
+        <ul class="contact-list">
+          <li>Email: <a href="mailto:goonggeum@ajyessi.com">goonggeum@ajeossi.com</a></li>
+          <li>GitHub: <a href="https://github.com/21ckortiger-star/space" target="_blank"
+              rel="noopener noreferrer">21ckortiger-star/space</a></li>
+          <li>Blog: 추후 추가 예정</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">© <span id="year"></span> kortiger. All rights reserved.</div>
+  </footer>
+
+  <script src="/js/main.js"></script>
+</body>
+
+</html>

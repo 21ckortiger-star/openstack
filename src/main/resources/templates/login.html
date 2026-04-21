@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>로그인</title>
+  <style>
+    :root {
+      --line: #27446f;
+      --text: #e9f4ff;
+      --muted: #a8c1e0;
+      --primary: #7cb9ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Pretendard", "Noto Sans KR", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 18% 22%, rgba(100, 190, 255, 0.32), transparent 34%),
+        radial-gradient(circle at 78% 16%, rgba(70, 130, 255, 0.28), transparent 42%),
+        radial-gradient(circle at 60% 72%, rgba(42, 107, 225, 0.22), transparent 38%),
+        linear-gradient(170deg, #020713 0%, #06122b 42%, #0b2149 100%);
+    }
+
+    .login-wrap {
+      width: min(460px, 92vw);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: linear-gradient(160deg, rgba(106, 170, 255, 0.12), rgba(255, 255, 255, 0.03));
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.34), inset 0 0 18px rgba(93, 170, 255, 0.08);
+      padding: 28px 24px;
+      backdrop-filter: blur(6px);
+    }
+
+    .title { margin: 0; font-size: 1.5rem; }
+    .desc { margin: 8px 0 18px; color: var(--muted); font-size: 0.92rem; }
+
+    .msg { margin: 8px 0 10px; font-size: 0.9rem; }
+    .msg.ok { color: #8ff0b3; }
+    .msg.err { color: #ff9d9d; }
+
+    .field { margin-bottom: 12px; }
+    label { display: block; margin-bottom: 6px; color: #d6e7ff; font-size: 0.92rem; }
+    input {
+      width: 100%;
+      border: 1px solid #35567f;
+      background: rgba(6, 16, 38, 0.92);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 11px 12px;
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    input:focus {
+      border-color: #7cb9ff;
+      box-shadow: 0 0 0 3px rgba(124, 185, 255, 0.18);
+    }
+
+    .actions { margin-top: 14px; display: flex; gap: 10px; align-items: center; }
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 10px 14px;
+      background: var(--primary);
+      color: #0f1836;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    a { color: #c7dcff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .bottom {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid #2d4568;
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+  </style>
+</head>
+<body>
+  <main class="login-wrap">
+    <h1 class="title">로그인</h1>
+    <p class="desc">환영해요! 계정으로 로그인해서 프로젝트를 둘러보세요.</p>
+
+    <p class="msg ok" th:if="${successMessage}" th:text="${successMessage}"></p>
+    <p class="msg err" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+    <p class="msg" th:if="${logoutMessage}" th:text="${logoutMessage}"></p>
+
+    <form method="post" action="/login">
+      <div class="field">
+        <label>아이디</label>
+        <input type="text" name="username" required autocomplete="username" title="테스트 아이디: admin" placeholder="(hover 힌트: admin)">
+      </div>
+      <div class="field">
+        <label>비밀번호</label>
+        <input type="password" name="password" required autocomplete="current-password" title="테스트 비밀번호: 1234" placeholder="(hover 힌트: 1234)">
+      </div>
+
+      <div class="actions">
+        <button type="submit">로그인</button>
+        <a href="/">메인으로</a>
+      </div>
+    </form>
+
+    <div class="bottom">
+      <span>아직 계정이 없나요?</span>
+      <a href="/signup">회원가입</a>
+    </div>
+  </main>
+</body>
+</html>
